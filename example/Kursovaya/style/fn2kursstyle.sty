@@ -241,6 +241,28 @@
 %Интерлиньяж (междустрочный интервал)
 \renewcommand{\baselinestretch}{1.3}
 
+
+%\def\supervisor#1{\def\@supervisor{#1}}
+
+
+
+\def\@itemsign{.}
+\def\@iitemsign{.}
+\def\@iiitemsign{)}
+
+\def\itemsign#1{\def\@itemsign{#1}}
+\def\iitemsign#1{\def\@iitemsign{#1}}
+\def\iiitemsign#1{\def\@iiitemsign{#1}}
+
+\usepackage{enumitem}
+\AddEnumerateCounter{\asbuk}{\russian@alph}{а}
+\renewcommand{\theenumii}{\arabic{enumi}.\arabic{enumii}} 
+\renewcommand{\theenumiii}{\asbuk{enumiii}} 
+
+\renewcommand*\labelenumi{\theenumi\@itemsign}
+\renewcommand*\labelenumii{\theenumii\@iitemsign}
+\renewcommand*\labelenumiii{\theenumiii\@iiitemsign}
+
 %%Изменение отбивок в перечнях на нормальные
 \renewcommand{\@listI}{%
 \leftmargin=32pt \rightmargin=0pt \labelsep=5pt \labelwidth=10pt
@@ -251,12 +273,20 @@
 \itemsep=\parsep}
 
 \renewcommand{\@listii}{%
-\leftmargin=25pt \rightmargin=0pt \labelsep=5pt \labelwidth=20pt
+\leftmargin=24pt \rightmargin=0pt \labelsep=5pt \labelwidth=20pt
 \itemindent=0pt \listparindent=0pt%%
 \topsep=1pt plus 1pt minus 1 pt
 \partopsep=2pt plus 1pt minus 1pt
 \parsep=0pt plus 1pt
 \itemsep=\parsep}
+
+\renewcommand{\@listiii}{%
+	\leftmargin=16pt \rightmargin=0pt \labelsep=5pt \labelwidth=20pt
+	\itemindent=0pt \listparindent=0pt%%
+	\topsep=1pt plus 1pt minus 1 pt
+	\partopsep=2pt plus 1pt minus 1pt
+	\parsep=0pt plus 1pt
+	\itemsep=\parsep}
 
 %% Команда центрирования для многострочных заголовков
 \def\raggedcenter@{\leftskip\z@ plus.4\hsize \rightskip\leftskip
@@ -580,10 +610,23 @@
 %   \conthdsection\thesection.\ \fi #1}}}}
 
 
+%\makeatletter
+\DeclareRobustCommand\checkfor[1]{%
+	\begingroup
+	\expandafter\ifx\csname#1\endcsname\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+	{%
+		\expandafter\endgroup\expandafter\ifx\csname#1\endcsname\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+	}{\endgroup\@firstoftwo}%
+}%
+%\makeatother
+
+
+
 %% Обложка
 
 \def\group#1{\def\@group{#1}}
 \def\supervisor#1{\def\@supervisor{#1}}
+\def\consultant#1{\def\@consultant{#1}}
 
 \renewcommand{\maketitle}{
 \thispagestyle{empty}
@@ -595,24 +638,28 @@
 
 \vspace*{-10mm}
 
-\begin{minipage}{30mm}
+\begin{minipage}{27mm}
 \ifpdf
- \includegraphics[scale=0.14]{emblema}
+ \includegraphics[scale=0.049,trim={9.5cm 5cm 9.5cm 5cm},clip]{Logo_Color_With-BG}
 \fi
 \end{minipage}
-\begin{minipage}{127mm}
+\begin{minipage}{130mm}
 \begin{center}
-\fontsize{9}{11pt}\selectfont\textbf{Министерство науки и высшего образования Российской Федерации}
+\fontsize{9}{11pt}\selectfont\textbf{\looser{0.05}{Министерство науки и высшего образования Российской Федерации}}
 
-\fontsize{9}{11pt}\selectfont\textbf{Федеральное государственное бюджетное образовательное учреждение}
+\medskip
 
-\fontsize{9}{11pt}\selectfont\textbf{высшего образования}
+\fontsize{9}{11pt}\selectfont\textbf{Федеральное государственное автономное }
+
+\fontsize{9}{11pt}\selectfont\textbf{образовательное учреждение высшего образования}
 
 \fontsize{9}{11pt}\selectfont\textbf{<<Московский государственный технический университет}
 
 \fontsize{9}{11pt}\selectfont\textbf{имени Н.\,Э.~Баумана}
 
 \fontsize{9}{11pt}\selectfont\textbf{(национальный исследовательский университет)>>}
+
+\smallskip
 
 \fontsize{9}{11pt}\selectfont\textbf{(МГТУ им.~Н.\,Э.~Баумана)}
 \end{center}
@@ -641,15 +688,23 @@
 
 \vspace*{2cm}
 
-\centerline{\fontsize{18}{20pt}\selectfont\textbf{РАСЧЕТНО-ПОЯСНИТЕЛЬНАЯ ЗАПИСКА}}
+\centerline{\fontsize{22}{20pt}\selectfont\textbf{КУРСОВАЯ РАБОТА}}
 
 \vspace*{5mm}
 
-\centerline{\fontsize{17}{20pt}\selectfont\textit{\textbf{К КУРСОВОЙ РАБОТЕ}}}
+\centerline{\fontsize{20}{20pt}\selectfont\textit{\textbf{НА ТЕМУ:}}}
 
-\vspace*{5mm}
-
-\centerline{\fontsize{17}{20pt}\selectfont\textit{\textbf{НА ТЕМУ:}}}
+%\vspace*{2cm}
+%
+%\centerline{\fontsize{18}{20pt}\selectfont\textbf{РАСЧЕТНО-ПОЯСНИТЕЛЬНАЯ ЗАПИСКА}}
+%
+%\vspace*{5mm}
+%
+%\centerline{\fontsize{17}{20pt}\selectfont\textit{\textbf{К КУРСОВОЙ РАБОТЕ}}}
+%
+%\vspace*{5mm}
+%
+%\centerline{\fontsize{17}{20pt}\selectfont\textit{\textbf{НА ТЕМУ}}}
 
 \begin{center}
 \fontsize{18}{24pt}\selectfont\textit{\textbf{\@title}}
@@ -661,11 +716,14 @@
 \small
 \noindent Студент \rlap{\rule[-1.2mm]{39mm}{0.2mm}}\hbox to 39mm{\hfill \@group \hfill}
 
-\noindent \phantom{Студент} \raisebox{2mm}{\hbox to 39mm{\hfill \footnotesize(Группа) \hfill}}
+\noindent \phantom{Студент} \raisebox{2mm}{\hbox to 39mm{\hfill \footnotesize(группа) \hfill}}
 
 \vspace*{3.5mm}
 
 \noindent{Руководитель курсовой работы}
+
+\checkfor{@consultant}{\vspace*{9.5mm}\par
+	Консультант}{}
 
 \vspace*{5mm}
 
@@ -674,13 +732,19 @@
 \begin{minipage}{79mm}
 \noindent\rlap{\rule[-1.2mm]{30mm}{0.2mm}}\hbox to 30mm{\hfill} \quad \rlap{\rule[-1.2mm]{47mm}{0.2mm}}{\rule{3mm}{0pt}\@author}
 
-\noindent\raisebox{2mm}{\hbox to 30mm{\hfill \footnotesize(Подпись, дата) \hfill}} \quad  \raisebox{2mm}{\rule{5mm}{0pt}\footnotesize(И.\,О.~Фамилия)}
+\noindent\raisebox{2mm}{\hbox to 30mm{\hfill \footnotesize(подпись, дата) \hfill}} \quad  \raisebox{2mm}{\rule{5mm}{0pt}\footnotesize(И.\,О.~Фамилия)}
 
 \vspace*{2mm}
 
 \noindent\rlap{\rule[-1.2mm]{30mm}{0.2mm}}\hbox to 30mm{\hfill} \quad \rlap{\rule[-1.2mm]{47mm}{0.2mm}}{\rule{3mm}{0pt}\@supervisor}
 
-\noindent\raisebox{2mm}{\hbox to 30mm{\hfill \footnotesize(Подпись, дата) \hfill}} \quad  \raisebox{2mm}{\rule{5mm}{0pt}\footnotesize(И.\,О.~Фамилия)}
+\noindent\raisebox{2mm}{\hbox to 30mm{\hfill \footnotesize(подпись, дата) \hfill}} \quad  \raisebox{2mm}{\rule{5mm}{0pt}\footnotesize(И.\,О.~Фамилия)}
+
+\checkfor{@consultant}{
+\vspace*{2mm}\par
+\noindent\rlap{\rule[-1.2mm]{30mm}{0.2mm}}\hbox to 30mm{\hfill} \quad \rlap{\rule[-1.2mm]{47mm}{0.2mm}}{\rule{3mm}{0pt}\@consultant}\par
+\noindent\raisebox{2mm}{\hbox to 30mm{\hfill \footnotesize(подпись, дата) \hfill}} \quad  \raisebox{2mm}{\rule{5mm}{0pt}\footnotesize(И.\,О.~Фамилия)}
+}{}
 
 \end{minipage}
 

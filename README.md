@@ -7,7 +7,7 @@
 
 ![Repo Size](https://img.shields.io/github/repo-size/vortexmethods/fn2kursstyle.svg)
 
-Copyright (C) 2020-2022 Марчевский И.К.
+Copyright (C) 2020-2025 Марчевский И.К.
 
 
 СОДЕРЖАНИЕ РЕПОЗИТОРИЯ
